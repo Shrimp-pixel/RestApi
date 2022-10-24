@@ -22,3 +22,10 @@ class Todo(models.Model):
 
     def __str__(self):
         return f'{self.project}-{self.creator}'
+
+    def delete(self, *args, **kwargs):
+        if self.is_active:
+            self.is_active = False
+        else:
+            self.is_active = True
+        self.save()
