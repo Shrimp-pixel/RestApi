@@ -1,4 +1,6 @@
 import React from "react";
+import {BrowserRouter, Route, Routes, Link, Navigate} from "react-router-dom"
+
 const styles = {
     display: 'flex',
     justifyContent:'space-around'
@@ -7,12 +9,22 @@ const styles = {
 const Menu = () =>{
     return(
     <header class="site-header">
-    <div style = {styles}>
-      <a href="#">Django ToDoApp</a>
-      <a href="#">Add task</a>
-      </div>
+    <div>
+        <nav style = {styles}>
+            <li>
+                <Link to='/'>Author</Link>
+            </li>
+            <li>
+                <Link to='/todo'>Todo</Link>
+            </li>
+            <li>
+                <Link to='/project'>Project</Link>
+            </li>
+        </nav>
+     </div>
     </header>
     )
 }
+
 
 export default Menu
