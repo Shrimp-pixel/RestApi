@@ -5,6 +5,13 @@ from .models import Todo, Project
 from .serializers import TodoSerializer, ProjectSerializer
 
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny, BasePermission
+
+
+class SuperUserOnly(BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_superuser
 
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
@@ -18,12 +25,13 @@ class TodoLimitOffsetPagination(LimitOffsetPagination):
 class TodoViewSet(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
-    #filterset_class = ToDoFilter
-    #pagination_class = TodoLimitOffsetPagination
+    # filterset_class = ToDoFilter
+    # pagination_class = TodoLimitOffsetPagination
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    #filterset_class = ProjectFilter
-    #pagination_class = ProjectLimitOffsetPagination
+    #permission_classes = [SuperUserOnly, ]
+    # filterset_class = ProjectFilter
+    # pagination_class = ProjectLimitOffsetPagination
