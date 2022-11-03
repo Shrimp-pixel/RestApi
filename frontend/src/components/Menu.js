@@ -20,6 +20,9 @@ const Menu = () =>{
             <li>
                 <Link to='/project'>Project</Link>
             </li>
+            <li>
+                {this.is_auth() ?<button onClick={()=>this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
+            </li>
         </nav>
      </div>
     </header>
