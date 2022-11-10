@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'rest_framework.authtoken',
+    'drf_yasg',
 
 ]
 
@@ -142,6 +143,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly' # DjangoModelPermissionsOrAnonReadOnly DjangoModelPermissions
     ],
+     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    #'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+
+
     #'DEFAULT_AUTHENTICATION_CLASSES': [
     #    'rest_framework.authentication.BasicAuthentication',
     #    'rest_framework.authentication.TokenAuthentication',

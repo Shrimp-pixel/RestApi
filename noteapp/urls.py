@@ -15,11 +15,34 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework.authtoken import views
+from rest_framework.permissions import AllowAny
+
+from userapp.viewsets import UserViewSet, DjangoUserViewSet
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Library',
+        default_version='v1',
+        description='Test api',
+        contact=openapi.Contact(email='admin@mail.ru'),
+        license=openapi.License(name='MIT License')
+    ),
+    public=True,
+    permission_classes=[AllowAny, ],
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('noteapp.routers')),
     path('api-auth/', include('rest_framework.urls')),
     path('api-token-auth/', views.obtain_auth_token),
+    path('api/<str:version>/users/', UserViewSet.as_view()),
+
+    path('api/<str:version>/djangousers/', DjangoUserViewSet.as_view()),
+
+    path('swagger<str:format>/', schema_view.without_ui()),
+    path('swagger/', schema_view.with_ui('swagger')),
 ]

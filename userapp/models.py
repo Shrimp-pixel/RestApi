@@ -9,5 +9,6 @@ class User(models.Model):
     email = models.EmailField(max_length=254, unique=True)
     birthday_year = models.PositiveIntegerField(blank=True, null=True)
 
+
     def __str__(self):
         return f'{self.last_name}-{self.first_name}'
