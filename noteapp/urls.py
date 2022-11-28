@@ -19,6 +19,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.authtoken import views
 from rest_framework.permissions import AllowAny
+from graphene_django.views import GraphQLView
 
 from userapp.viewsets import UserViewSet, DjangoUserViewSet
 
@@ -45,4 +46,6 @@ urlpatterns = [
 
     path('swagger<str:format>/', schema_view.without_ui()),
     path('swagger/', schema_view.with_ui('swagger')),
+
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
 ]
