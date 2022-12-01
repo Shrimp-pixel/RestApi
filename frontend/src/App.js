@@ -9,6 +9,8 @@ import ProjectList from "./components/Projects";
 import Footer from "./components/Footer";
 import NotFound404 from "./components/NotFound404";
 import LoginForm from "./components/Auth";
+import ToDoForm from "./components/ToDoForm";
+import ProjectForm from "./components/PF";
 import axios from 'axios';
 import {BrowserRouter, Route, Routes, Link, Navigate} from "react-router-dom"
 import Cookies from 'universal-cookie'
@@ -28,6 +30,46 @@ class App extends React.Component {
             'token':'',
         }
     }
+
+    delete_todo(id){
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/todo/${id}`, {headers}).then(response =>{
+            this.load_data()
+        }).catch(error => {
+        console.log(error)
+        this.setState({todos:[]})
+        })}
+
+    delete_project(id){
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/project/${id}`, {headers}).then(response =>{
+            this.load_data()
+        }).catch(error => {
+        console.log(error)
+        this.setState({projects:[]})
+        })}
+
+    create_todo(text, project, creator){
+        const headers = this.get_headers()
+        const data = {text:text, project:project, creator:creator}
+
+        axios.post(`http://127.0.0.1:8000/api/todo/`, data, {headers}).then(response =>{
+            this.load_data()
+        }).catch(error => {
+            console.log(error)
+            this.setState({todos:[]})
+        })}
+
+    create_project(name, url, users){
+        const headers = this.get_headers()
+        const data = {name:name, url:url, users:users}
+
+        axios.post(`http://127.0.0.1:8000/api/project/`, data, {headers}).then(response =>{
+            this.load_data()
+        }).catch(error => {
+            console.log(error)
+            this.setState({projects:[]})
+        })}
 
     logout(){
         this.set_token('')
@@ -129,8 +171,21 @@ render(){
                     <Route path=':creatorId' element={<ToDoCreator todos={this.state.todos}/>}/>
                 </Route>
                 <Route exact path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)}/>}/>
-                <Route exact path='/todo' element={<ToDoList todos={this.state.todos}/>}/>
-                <Route exact path='/project' element={<ProjectList projects={this.state.projects}/>}/>
+                <Route exact path='/todo' element={<ToDoList todos={this.state.todos} delete_todo={(id)=>this.delete_todo(id)}/>}/>
+
+                <Route exact path='/todo/create'
+                    element={<ToDoForm
+                        creator={this.state.authors}
+                        project={this.state.projects}
+                        create_todo={(text, project, creator)=>this.create_todo(text, project, creator)}
+                    />}/>
+
+                <Route exact path='/project' element={<ProjectList projects={this.state.projects}  delete_project={(id)=>this.delete_project(id)}/>}/>
+                <Route exact path='/project/create'
+                    element={<ProjectForm
+                        users={this.state.authors}
+                        create_project={(name, url, users)=>this.create_project(name, url, users)}
+                    />}/>
                 <Route path='*' element={<NotFound404/>}/>
             </Routes>
         </BrowserRouter>

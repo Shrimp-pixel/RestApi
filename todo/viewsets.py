@@ -23,7 +23,7 @@ class TodoLimitOffsetPagination(LimitOffsetPagination):
 
 
 class TodoViewSet(viewsets.ModelViewSet):
-    queryset = Todo.objects.all()
+    queryset = Todo.objects.all().filter(is_active=True)
     serializer_class = TodoSerializer
     # filterset_class = ToDoFilter
     # pagination_class = TodoLimitOffsetPagination
