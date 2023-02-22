@@ -4,6 +4,8 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from userapp.models import User
+from todo.models import Todo, Project
+from django.contrib.auth.models import User as DUser
 
 
 def load_from_json(file_name):
@@ -14,6 +16,9 @@ def load_from_json(file_name):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         User.objects.all().delete()
+        DUser.objects.all().delete()
+
+        DUser.objects.create_superuser('admin', password='admin')
 
         for i in range(5):
             User.objects.create(username=f'django{i}', first_name=f'firstname{i}', last_name=f'last_name{i}',
